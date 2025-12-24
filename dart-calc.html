@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Dart Calc</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            overscroll-behavior: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #root {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        input {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const DartBoard = ({ onScore }) => {
+            const numbers = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
+            
+            return (
+                <div className="relative w-full max-w-md mx-auto aspect-square touch-none">
+                    <svg viewBox="0 0 400 400" className="w-full h-full">
+                        <circle cx="200" cy="200" r="195" fill="#1a1a1a" stroke="#fff" strokeWidth="2"/>
+                        
+                        {numbers.map((num, i) => {
+                            const angle = (i * 18 - 99) * Math.PI / 180;
+                            const nextAngle = ((i + 1) * 18 - 99) * Math.PI / 180;
+                            const colors = i % 2 === 0 ? ['#000', '#f00'] : ['#e8d4a0', '#0f0'];
+                            
+                            return (
+                                <g key={i}>
+                                    <path
+                                        d={`M 200 200 L ${200 + 175 * Math.cos(angle)} ${200 + 175 * Math.sin(angle)} A 175 175 0 0 1 ${200 + 175 * Math.cos(nextAngle)} ${200 + 175 * Math.sin(nextAngle)} Z`}
+                                        fill={colors[0]}
+                                        stroke="#fff"
+                                        strokeWidth="1"
+                                        className="cursor-pointer active:opacity-50"
+                                        onClick={() => onScore(num, 1)}
+                                    />
+                                    
+                                    <path
+                                        d={`M ${200 + 175 * Math.cos(angle)} ${200 + 175 * Math.sin(angle)} A 175 175 0 0 1 ${200 + 175 * Math.cos(nextAngle)} ${200 + 175 * Math.sin(nextAngle)} L ${200 + 158 * Math.cos(nextAngle)} ${200 + 158 * Math.sin(nextAngle)} A 158 158 0 0 0 ${200 + 158 * Math.cos(angle)} ${200 + 158 * Math.sin(angle)} Z`}
+                                        fill={colors[1]}
+                                        stroke="#fff"
+                                        strokeWidth="1"
+                                        className="cursor-pointer active:opacity-50"
+                                        onClick={() => onScore(num, 2)}
+                                    />
+                                    
+                                    <path
+                                        d={`M ${200 + 158 * Math.cos(angle)} ${200 + 158 * Math.sin(angle)} A 158 158 0 0 1 ${200 + 158 * Math.cos(nextAngle)} ${200 + 158 * Math.sin(nextAngle)} L ${200 + 120 * Math.cos(nextAngle)} ${200 + 120 * Math.sin(nextAngle)} A 120 120 0 0 0 ${200 + 120 * Math.cos(angle)} ${200 + 120 * Math.sin(angle)} Z`}
+                                        fill={colors[0]}
+                                        stroke="#fff"
+                                        strokeWidth="1"
+                                        className="cursor-pointer active:opacity-50"
+                                        onClick={() => onScore(num, 1)}
+                                    />
+                                    
+                                    <path
+                                        d={`M ${200 + 120 * Math.cos(angle)} ${200 + 120 * Math.sin(angle)} A 120 120 0 0 1 ${200 + 120 * Math.cos(nextAngle)} ${200 + 120 * Math.sin(nextAngle)} L ${200 + 103 * Math.cos(nextAngle)} ${200 + 103 * Math.sin(nextAngle)} A 103 103 0 0 0 ${200 + 103 * Math.cos(angle)} ${200 + 103 * Math.sin(angle)} Z`}
+                                        fill={colors[1]}
+                                        stroke="#fff"
+                                        strokeWidth="1"
+                                        className="cursor-pointer active:opacity-50"
+                                        onClick={() => onScore(num, 3)}
+                                    />
+                                    
+                                    <path
+                                        d={`M ${200 + 103 * Math.cos(angle)} ${200 + 103 * Math.sin(angle)} A 103 103 0 0 1 ${200 + 103 * Math.cos(nextAngle)} ${200 + 103 * Math.sin(nextAngle)} L ${200 + 35 * Math.cos(nextAngle)} ${200 + 35 * Math.sin(nextAngle)} A 35 35 0 0 0 ${200 + 35 * Math.cos(angle)} ${200 + 35 * Math.sin(angle)} Z`}
+                                        fill={colors[0]}
+                                        stroke="#fff"
+                                        strokeWidth="1"
+                                        className="cursor-pointer active:opacity-50"
+                                        onClick={() => onScore(num, 1)}
+                                    />
+                                    
+                                    <text
+                                        x={200 + 187 * Math.cos(angle + 9 * Math.PI / 180)}
+                                        y={200 + 187 * Math.sin(angle + 9 * Math.PI / 180)}
+                                        textAnchor="middle"
+                                        dominantBaseline="middle"
+                                        fill="#fff"
+                                        fontSize="16"
+                                        fontWeight="bold"
+                                        style={{ pointerEvents: 'none' }}
+                                    >
+                                        {num}
+                                    </text>
+                                </g>
+                            );
+                        })}
+                        
+                        <circle cx="200" cy="200" r="35" fill="#0f0" stroke="#fff" strokeWidth="2" 
+                                className="cursor-pointer active:opacity-50" onClick={() => onScore(25, 1)}/>
+                        
+                        <circle cx="200" cy="200" r="17" fill="#f00" stroke="#fff" strokeWidth="2"
+                                className="cursor-pointer active:opacity-50" onClick={() => onScore(25, 2)}/>
+                    </svg>
+                </div>
+            );
+        };
+
+        const DartCalc = () => {
+            const [players, setPlayers] = useState([
+                { id: 1, name: 'Player 1', score: 301, history: [] }
+            ]);
+            const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+            const [currentThrow, setCurrentThrow] = useState([]);
+
+            const addPlayer = () => {
+                if (players.length < 4) {
+                    setPlayers([...players, {
+                        id: players.length + 1,
+                        name: `Player ${players.length + 1}`,
+                        score: 301,
+                        history: []
+                    }]);
+                }
+            };
+
+            const removePlayer = (id) => {
+                if (players.length > 1) {
+                    const newPlayers = players.filter(p => p.id !== id);
+                    setPlayers(newPlayers);
+                    if (currentPlayerIndex >= newPlayers.length) {
+                        setCurrentPlayerIndex(newPlayers.length - 1);
+                    }
+                }
+            };
+
+            const updatePlayerName = (id, name) => {
+                setPlayers(players.map(p => p.id === id ? { ...p, name } : p));
+            };
+
+            const handleScore = (value, multiplier) => {
+                const points = value * multiplier;
+                const newThrow = [...currentThrow, { value, multiplier, points }];
+                setCurrentThrow(newThrow);
+
+                if (newThrow.length === 3) {
+                    commitThrow(newThrow);
+                }
+            };
+
+            const handleMiss = () => {
+                const newThrow = [...currentThrow, { value: 0, multiplier: 0, points: 0 }];
+                setCurrentThrow(newThrow);
+
+                if (newThrow.length === 3) {
+                    commitThrow(newThrow);
+                }
+            };
+
+            const handleUndo = () => {
+                if (currentThrow.length > 0) {
+                    setCurrentThrow(currentThrow.slice(0, -1));
+                } else {
+                    const prevPlayerIndex = (currentPlayerIndex - 1 + players.length) % players.length;
+                    const prevPlayer = players[prevPlayerIndex];
+                    
+                    if (prevPlayer.history.length > 0) {
+                        const lastThrow = prevPlayer.history[prevPlayer.history.length - 1];
+                        const totalPoints = lastThrow.reduce((sum, dart) => sum + dart.points, 0);
+                        const restoredScore = prevPlayer.score + totalPoints;
+                        
+                        setPlayers(players.map((p, i) => 
+                            i === prevPlayerIndex 
+                                ? { ...p, score: restoredScore, history: p.history.slice(0, -1) }
+                                : p
+                        ));
+                        
+                        setCurrentPlayerIndex(prevPlayerIndex);
+                    }
+                }
+            };
+
+            const commitThrow = (throwData) => {
+                const totalPoints = throwData.reduce((sum, dart) => sum + dart.points, 0);
+                const currentPlayer = players[currentPlayerIndex];
+                const newScore = currentPlayer.score - totalPoints;
+
+                if (newScore === 0 && throwData[throwData.length - 1].multiplier === 2) {
+                    setPlayers(players.map((p, i) => 
+                        i === currentPlayerIndex 
+                            ? { ...p, score: 0, history: [...p.history, throwData] }
+                            : p
+                    ));
+                    setCurrentThrow([]);
+                    alert(`${currentPlayer.name} wins!`);
+                } else if (newScore < 0 || newScore === 1) {
+                    setPlayers(players.map((p, i) => 
+                        i === currentPlayerIndex 
+                            ? { ...p, history: [...p.history, throwData] }
+                            : p
+                    ));
+                    setCurrentThrow([]);
+                    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
+                } else {
+                    setPlayers(players.map((p, i) => 
+                        i === currentPlayerIndex 
+                            ? { ...p, score: newScore, history: [...p.history, throwData] }
+                            : p
+                    ));
+                    setCurrentThrow([]);
+                    setCurrentPlayerIndex((currentPlayerIndex + 1) % players.length);
+                }
+            };
+
+            const resetGame = () => {
+                setPlayers(players.map(p => ({ ...p, score: 301, history: [] })));
+                setCurrentPlayerIndex(0);
+                setCurrentThrow([]);
+            };
+
+            const currentPlayer = players[currentPlayerIndex];
+            const prevPlayerIndex = (currentPlayerIndex - 1 + players.length) % players.length;
+            const canUndo = currentThrow.length > 0 || players[prevPlayerIndex].history.length > 0;
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-3">
+                    <div className="max-w-6xl mx-auto pb-20">
+                        <h1 className="text-3xl font-bold text-white text-center mb-4 mt-2">Dart Calc</h1>
+                        
+                        <div className="grid lg:grid-cols-2 gap-4">
+                            <div className="bg-slate-800 rounded-lg p-4 shadow-xl">
+                                <DartBoard onScore={handleScore} />
+                                
+                                <div className="mt-4 space-y-3">
+                                    <div className="text-white text-center">
+                                        <p className="text-lg font-semibold">{currentPlayer.name}'s Turn</p>
+                                        <p className="text-3xl font-bold text-green-400">{currentPlayer.score}</p>
+                                    </div>
+                                    
+                                    <div className="flex justify-center gap-2 min-h-[44px]">
+                                        {currentThrow.map((dart, i) => (
+                                            <div key={i} className="bg-slate-700 text-white px-4 py-2 rounded text-base">
+                                                {dart.points === 0 ? 'Miss' : 
+                                                 dart.multiplier === 1 ? `S${dart.value}` :
+                                                 dart.multiplier === 2 ? `D${dart.value}` :
+                                                 `T${dart.value}`}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <button
+                                            onClick={handleMiss}
+                                            disabled={currentThrow.length >= 3}
+                                            className="bg-red-600 active:bg-red-800 disabled:bg-gray-600 text-white font-semibold py-4 px-4 rounded-lg transition-colors text-lg"
+                                        >
+                                            Miss
+                                        </button>
+                                        <button
+                                            onClick={handleUndo}
+                                            disabled={!canUndo}
+                                            className="bg-orange-600 active:bg-orange-800 disabled:bg-gray-600 text-white font-semibold py-4 px-4 rounded-lg transition-colors text-lg flex items-center justify-center gap-2"
+                                        >
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M3 7v6h6"/>
+                                                <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/>
+                                            </svg>
+                                            Undo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-slate-800 rounded-lg p-4 shadow-xl">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="9" cy="7" r="4"/>
+                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                        </svg>
+                                        Players
+                                    </h2>
+                                    {players.length < 4 && (
+                                        <button
+                                            onClick={addPlayer}
+                                            className="bg-green-600 active:bg-green-800 text-white p-2 rounded-lg transition-colors"
+                                        >
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                                <line x1="5" y1="12" x2="19" y2="12"/>
+                                            </svg>
+                                        </button>
+                                    )}
+                                </div>
+
+                                <div className="space-y-3 mb-4">
+                                    {players.map((player, index) => (
+                                        <div
+                                            key={player.id}
+                                            className={`p-4 rounded-lg ${
+                                                index === currentPlayerIndex
+                                                    ? 'bg-green-600 ring-2 ring-green-400'
+                                                    : 'bg-slate-700'
+                                            }`}
+                                        >
+                                            <div className="flex justify-between items-center">
+                                                <input
+                                                    type="text"
+                                                    value={player.name}
+                                                    onChange={(e) => updatePlayerName(player.id, e.target.value)}
+                                                    className="bg-transparent text-white font-semibold text-lg outline-none border-b border-transparent focus:border-white w-full mr-2"
+                                                />
+                                                {players.length > 1 && (
+                                                    <button
+                                                        onClick={() => removePlayer(player.id)}
+                                                        className="text-red-400 active:text-red-200 transition-colors flex-shrink-0"
+                                                    >
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                            <polyline points="3 6 5 6 21 6"/>
+                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                        </svg>
+                                                    </button>
+                                                )}
+                                            </div>
+                                            <p className="text-3xl font-bold text-white mt-2">{player.score}</p>
+                                            {player.score === 0 && (
+                                                <p className="text-yellow-300 font-semibold mt-1">Winner! 🎯</p>
+                                            )}
+                                            
+                                            {player.history.length > 0 && (
+                                                <div className="mt-3 pt-3 border-t border-white/20">
+                                                    <p className="text-white/60 text-xs font-semibold mb-2">History:</p>
+                                                    <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+                                                        {player.history.map((turn, turnIndex) => {
+                                                            const turnTotal = turn.reduce((sum, dart) => sum + dart.points, 0);
+                                                            return (
+                                                                <div
+                                                                    key={turnIndex}
+                                                                    className="bg-white/10 text-white text-xs px-2 py-1 rounded"
+                                                                >
+                                                                    {turnTotal}
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <button
+                                    onClick={resetGame}
+                                    className="w-full bg-blue-600 active:bg-blue-800 text-white font-semibold py-4 px-6 rounded-lg transition-colors text-lg"
+                                >
+                                    New Game
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<DartCalc />, document.getElementById('root'));
+    </script>
+</body>
+</html>
